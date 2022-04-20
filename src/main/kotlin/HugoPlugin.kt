@@ -74,15 +74,12 @@ class HugoRenderer(
         builder.append("title = \"${title}\"\n")
         builder.append("draft = false\n")
         builder.append("toc = false\n")
-        builder.append("type = \"reference\"\n")
+        builder.append("type = \"api\"\n")
 
         // Add menu item for each package
         if (page is PackagePage) {
             val linkTitle = page.name.getLinkTitle(hugoConfiguration)
             builder.append("linktitle = \"${linkTitle}\"\n")
-            builder.append("[menu.docs]\n")
-            builder.append("  parent = \"hw-security-reference\"\n")
-            builder.append("  weight = 1\n")
         }
     }
 
