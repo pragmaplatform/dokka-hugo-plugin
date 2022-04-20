@@ -129,6 +129,10 @@ class HugoRenderer(
         append("</b>")
     }
 
+    private fun StringBuilder.buildNewLine() {
+        append("\n")
+    }
+
     override fun StringBuilder.wrapGroup(
         node: ContentGroup,
         pageContext: ContentPage,
