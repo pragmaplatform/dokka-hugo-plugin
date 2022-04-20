@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.4.0"
+    kotlin("jvm") version "1.6.10"
     id("maven-publish")
 }
 
@@ -11,7 +11,6 @@ apply {
 
 repositories {
     mavenCentral()
-    jcenter()
     maven("https://dl.bintray.com/kotlin/kotlin-eap")
 }
 
@@ -24,9 +23,9 @@ tasks.withType(KotlinCompile::class).all {
 dependencies {
     implementation(kotlin("stdlib"))
     testImplementation(kotlin("test-junit"))
-    compileOnly("org.jetbrains.dokka:dokka-core:1.4.20")
-    implementation("org.jetbrains.dokka:dokka-base:1.4.20")
-    implementation("org.jetbrains.dokka:gfm-plugin:1.4.20")
+    compileOnly("org.jetbrains.dokka:dokka-core:1.6.10")
+    implementation("org.jetbrains.dokka:dokka-base:1.6.10")
+    implementation("org.jetbrains.dokka:gfm-plugin:1.6.10")
 }
 
 
