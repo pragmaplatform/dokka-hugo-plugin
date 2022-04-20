@@ -231,7 +231,6 @@ class HugoRenderer(
 
             distinct.filter { it.key.isNotBlank() }.forEach { (text, platforms) ->
                 append(" ")
-//                buildSourceSetTags(platforms.toSet())
                 append(" $text ")
                 buildNewLine()
             }
@@ -249,7 +248,6 @@ class HugoRenderer(
         buildNewLine()
         if (node.dci.kind == ContentKind.Sample || node.dci.kind == ContentKind.Parameters) {
             node.sourceSets.forEach { sourcesetData ->
-//                append(sourcesetData.name)
                 buildNewLine()
                 buildTable(
                     node.copy(
@@ -285,25 +283,16 @@ class HugoRenderer(
             node.children.forEach {
                 append("<tr>\n")
 
-//                val builder = StringBuilder()
                 it.children.forEach {
                     append("<td>\n")
                     append("{{% md %}}\n")
                     append("\n")
                     append(buildString { it.build(this, pageContext) })
-//                    builder.append("| ")
-//                    builder.append(
-//                        buildString { it.build(this, pageContext) }.replace(
-//                            Regex("#+ "),
-//                            ""
-//                        )
-//                    )  // Workaround for headers inside tables
+
                     append("\n")
                     append("{{% /md %}}\n")
                     append("</td>\n")
                 }
-//                append(builder.toString().withEntersAsHtml())
-//                append(" | ".repeat(size - it.children.size))
                 append("<td></td>\n".repeat(size - it.children.size))
 
                 append("</tr>\n")
