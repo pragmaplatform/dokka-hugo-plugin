@@ -265,13 +265,13 @@ class HugoRenderer(
             val size = node.header.size
 
             if (node.header.isNotEmpty()) {
-                node.header.forEach {
-                    append("<th>\n")
-                    it.children.forEach {
+                if (size == 1) {
+                    val nodeHeader = node.header.first()
+                    nodeHeader.children.forEach {
+                        append("<th>")
                         it.build(this, pageContext, it.sourceSets)
+                        append("</th>")
                     }
-                    buildNewLine()
-                    append("</th>\n")
                 }
                 buildNewLine()
             } else {
