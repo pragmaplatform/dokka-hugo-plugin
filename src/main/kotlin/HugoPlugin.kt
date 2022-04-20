@@ -275,7 +275,7 @@ class HugoRenderer(
                 }
                 buildNewLine()
             } else {
-                append("<th></th>\n".repeat(size))
+                append("<th></th>\n".repeat(node.header.size))
             }
             append("</tr>\n")
             append("</thead>\n")
@@ -294,7 +294,7 @@ class HugoRenderer(
                     append("{{% /md %}}\n")
                     append("</td>\n")
                 }
-                append("<td></td>\n".repeat(size - it.children.size))
+                append("<td></td>\n".repeat(Math.max(0, node.header.size - it.children.size)))
 
                 append("</tr>\n")
                 append("\n")
