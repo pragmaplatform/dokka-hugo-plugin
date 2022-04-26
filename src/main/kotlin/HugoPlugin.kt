@@ -49,6 +49,25 @@ class HugoPlugin : DokkaPlugin() {
     }
 }
 
+private fun isUndocumented(documentable: Documentable, sourceSet: DokkaConfiguration.DokkaSourceSet): Boolean {
+    fun resolveDependentSourceSets(sourceSet: DokkaConfiguration.DokkaSourceSet): List<DokkaConfiguration.DokkaSourceSet> {
+        return sourceSet.dependentSourceSets.mapNotNull { sourceSetID ->
+            documentable.sourceSets.singleOrNull { it.sourceSetID == sourceSetID }
+        }
+    }
+
+    fun withAllDependentSourceSets(sourceSet: DokkaConfiguration.DokkaSourceSet): Sequence<DokkaConfiguration.DokkaSourceSet> = sequence {
+        yield(sourceSet)
+        for (dependentSourceSet in resolveDependentSourceSets(sourceSet)) {
+            yieldAll(withAllDependentSourceSets(dependentSourceSet))
+        }
+    }
+
+    return withAllDependentSourceSets(sourceSet).all { sourceSetOrDependentSourceSet ->
+        documentable.documentation[sourceSetOrDependentSourceSet]?.children?.isEmpty() ?: true
+    }
+}
+
 // Hugo uses Goldmark since 0.60
 class HugoRenderer(
     context: DokkaContext
