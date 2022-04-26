@@ -1,24 +1,21 @@
 package org.jetbrains.dokka.hugo
 
 import org.jetbrains.dokka.CoreExtensions
+import org.jetbrains.dokka.DokkaConfiguration
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.renderers.PackageListCreator
 import org.jetbrains.dokka.base.renderers.RootCreator
+import org.jetbrains.dokka.base.renderers.sourceSets
 import org.jetbrains.dokka.base.resolvers.local.DokkaLocationProvider
 import org.jetbrains.dokka.base.resolvers.local.LocationProviderFactory
 import org.jetbrains.dokka.base.resolvers.shared.RecognizedLinkFormat
-import org.jetbrains.dokka.gfm.CommonmarkRenderer
 import org.jetbrains.dokka.gfm.GfmPlugin
+import org.jetbrains.dokka.gfm.renderer.CommonmarkRenderer
 import org.jetbrains.dokka.model.DisplaySourceSet
+import org.jetbrains.dokka.model.Documentable
 import org.jetbrains.dokka.pages.*
-import org.jetbrains.dokka.plugability.DokkaContext
-import org.jetbrains.dokka.plugability.DokkaPlugin
-import org.jetbrains.dokka.plugability.plugin
-import org.jetbrains.dokka.plugability.query
+import org.jetbrains.dokka.plugability.*
 import org.jetbrains.dokka.transformers.pages.PageTransformer
-import java.lang.StringBuilder
-import org.jetbrains.dokka.plugability.configuration
-
 
 class HugoPlugin : DokkaPlugin() {
 
