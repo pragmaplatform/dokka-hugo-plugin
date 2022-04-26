@@ -79,12 +79,24 @@ class HugoRenderer(
         page: ContentPage,
         content: (StringBuilder, ContentPage) -> Unit
     ): String {
-        val builder = StringBuilder()
-        builder.append("+++\n")
-        buildFrontMatter(page, builder)
-        builder.append("+++\n\n")
-        content(builder, page)
-        return builder.toString()
+        val documentable = page.documentable
+        var atLeastOneIsDocumented = false
+        documentable?.sourceSets?.forEach { sourceSet ->
+            val setIsDocumented = !isUndocumented(documentable, sourceSet)
+            atLeastOneIsDocumented = atLeastOneIsDocumented || setIsDocumented
+            println(">>>> ANDRONIC : ${setIsDocumented} | ${documentable.name} | ${documentable.dri.packageName}")
+        }
+
+        if (atLeastOneIsDocumented) {
+            val builder = StringBuilder()
+            builder.append("+++\n")
+            buildFrontMatter(page, builder)
+            builder.append("+++\n\n")
+            content(builder, page)
+            return builder.toString()
+        } else {
+            return ""
+        }
     }
 
     private fun buildFrontMatter(page: ContentPage, builder: StringBuilder) {
