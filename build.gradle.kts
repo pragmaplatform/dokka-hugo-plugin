@@ -32,9 +32,9 @@ dependencies {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            groupId = "de.cotech"
+            groupId = "gg.pragma"
             artifactId = "dokka-hugo-plugin"
-            version = "2.0"
+            version = "3.0"
 
             from(components["kotlin"])
         }
