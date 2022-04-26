@@ -161,25 +161,13 @@ class HugoRenderer(
         fun isExternalHref(address: String) = address.contains(":/")
 
         if (isExternalHref(address)) {
-//            if (inCodeBlock) {
-//                // `[Link](/link)` -> ` `[`Link`](/link)` `
-//                // whitespaces are important to properly stop code block in Hugo
-//                wrap(" `[`", "`]($href)` ", body)
-//            }
-//            else {
             append("[")
             content()
             append("]($address)")
-//            }
         } else {
-//            if (inCodeBlock) {
-//                wrap(" `[`", "`]({{< relref \"$href\" >}})` ", body)
-//            }
-//            else {
             append("[")
             content()
             append("]({{< relref \"$address\" >}})")
-//            }
         }
     }
 
@@ -187,27 +175,20 @@ class HugoRenderer(
         code: ContentCodeBlock,
         pageContext: ContentPage
     ) {
-//        inCodeBlock = true
-//        ensureParagraph()
         append(if (code.language.isEmpty()) "```java\n" else "```$code.language\n")
         code.children.forEach {
             buildContentNode(it, pageContext)
         }
-//        ensureNewline()
         append("\n```\n")
-//        appendLine()
-//        inCodeBlock = false
     }
 
     override fun StringBuilder.buildCodeInline(
         code: ContentCodeInline,
         pageContext: ContentPage
     ) {
-//        append("`")
         code.children.forEach {
             buildContentNode(it, pageContext)
         }
-//        append("`")
     }
 
     override fun StringBuilder.buildPlatformDependent(
@@ -305,8 +286,6 @@ class HugoRenderer(
         append("</table>\n")
     }
 
-//    private fun String.withEntersAsHtml(): String = replace("\n", "<br>")
-
     // copied from GfmPlugin
     override fun StringBuilder.buildDivergent(
         node: ContentDivergentGroup,
@@ -327,11 +306,7 @@ class HugoRenderer(
         distinct.values.forEach { entry ->
             val (instance, sourceSets) = entry.getInstanceAndSourceSets()
 
-//            buildSourceSetTags(sourceSets)
-//            buildNewLine()
             instance.before?.let {
-//                append("Brief description")
-//                buildNewLine()
                 buildContentNode(
                     it,
                     pageContext,
@@ -340,7 +315,6 @@ class HugoRenderer(
                 buildNewLine()
             }
 
-//            append("Content")
             buildNewLine()
             entry.groupBy {
                 buildString {
@@ -366,7 +340,6 @@ class HugoRenderer(
                 }
 
             instance.after?.let {
-//                append("More info")
                 buildNewLine()
                 buildContentNode(
                     it,
