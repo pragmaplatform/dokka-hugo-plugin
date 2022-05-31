@@ -74,6 +74,8 @@ class HugoRenderer(
     context: DokkaContext
 ) : CommonmarkRenderer(context) {
 
+    private val manualListOfModules = arrayOf("core", "social-common", "social", "game-common", "game", "server-base", "load-test")
+
     override val preprocessors = context.plugin<HugoPlugin>().query { hugoPreprocessors }
 
     override fun buildPage(
@@ -143,10 +145,33 @@ class HugoRenderer(
         get() = this !is RendererSpecificPage || strategy != RenderingStrategy.DoNothing
 
     // copied from GfmPlugin
-    private fun StringBuilder.buildLink(to: PageNode, from: PageNode) =
-        buildLink(locationProvider.resolve(to, from)!!) {
+    private fun StringBuilder.buildLink(to: PageNode, from: PageNode) {
+        var resolved = locationProvider.resolve(to, from)!!
+
+//        println(">>>> StringBuilder.buildLink: $from (from ${from.name}) --->>> ${to} (to ${to.name}) | resolved: $resolved")
+
+        if (manualListOfModules.contains(to.name) && resolved.endsWith("../_index.md")) {
+            resolved = resolved.replaceFirst("../", "")
+        }
+
+        buildLink(resolved) {
             append(to.name)
         }
+    }
+
+    override fun StringBuilder.buildLink(address: String, content: StringBuilder.() -> Unit) {
+        fun isExternalHref(address: String) = address.contains(":/")
+
+        if (isExternalHref(address)) {
+            append("[")
+            content()
+            append("]($address)")
+        } else {
+            append("[")
+            content()
+            append("]({{< relref \"$address\" >}})")
+        }
+    }
 
     // copied from GfmPlugin
     private fun StringBuilder.buildParagraph() {
@@ -186,20 +211,6 @@ class HugoRenderer(
                 buildEndB()
             }
             else -> childrenCallback()
-        }
-    }
-
-    override fun StringBuilder.buildLink(address: String, content: StringBuilder.() -> Unit) {
-        fun isExternalHref(address: String) = address.contains(":/")
-
-        if (isExternalHref(address)) {
-            append("[")
-            content()
-            append("]($address)")
-        } else {
-            append("[")
-            content()
-            append("]({{< relref \"$address\" >}})")
         }
     }
 
