@@ -183,11 +183,11 @@ class HugoRenderer(
     }
 
     private fun StringBuilder.buildB() {
-        append("<b>")
+        append("<code>")
     }
 
     private fun StringBuilder.buildEndB() {
-        append("</b>")
+        append("</code>")
     }
 
     private fun StringBuilder.buildNewLine() {
