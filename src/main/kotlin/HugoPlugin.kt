@@ -87,33 +87,37 @@ class HugoRenderer(
         documentable?.sourceSets?.forEach { sourceSet ->
             val setIsDocumented = !isUndocumented(documentable, sourceSet)
             atLeastOneIsDocumented = atLeastOneIsDocumented || setIsDocumented
-            println(">>>> ANDRONIC : ${setIsDocumented} | ${documentable.name} | ${documentable.dri.packageName}")
+//            println(">>>> ANDRONIC : ${setIsDocumented} | ${documentable.name} | ${documentable.dri.packageName}")
         }
 
-        if (atLeastOneIsDocumented) {
+        return if (page is PackagePage || atLeastOneIsDocumented) {
             val builder = StringBuilder()
-            builder.append("+++\n")
+            builder.append("---\n")
             buildFrontMatter(page, builder)
-            builder.append("+++\n\n")
+            builder.append("---\n\n")
             content(builder, page)
-            return builder.toString()
+            builder.toString()
         } else {
-            return ""
+            ""
         }
     }
 
     private fun buildFrontMatter(page: ContentPage, builder: StringBuilder) {
         val hugoConfiguration = getConfig()
         val title = page.name.getTitle(hugoConfiguration)
-        builder.append("title = \"${title}\"\n")
-        builder.append("draft = false\n")
-        builder.append("toc = false\n")
-        builder.append("type = \"api\"\n")
+        builder.append("title: \"${title}\"\n")
+        builder.append("draft: false\n")
+        builder.append("toc: false\n")
+        builder.append("bottomNav: false\n")
+        builder.append("type: \"api\"\n")
 
         // Add menu item for each package
         if (page is PackagePage) {
             val linkTitle = page.name.getLinkTitle(hugoConfiguration)
-            builder.append("linktitle = \"${linkTitle}\"\n")
+            builder.append("linktitle: \"${linkTitle}\"\n")
+            builder.append("bookHidden: false\n")
+        } else {
+            builder.append("bookHidden: true\n")
         }
     }
 
