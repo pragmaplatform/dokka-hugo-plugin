@@ -5,7 +5,6 @@ import org.jetbrains.dokka.DokkaConfiguration
 import org.jetbrains.dokka.base.DokkaBase
 import org.jetbrains.dokka.base.renderers.PackageListCreator
 import org.jetbrains.dokka.base.renderers.RootCreator
-import org.jetbrains.dokka.base.renderers.sourceSets
 import org.jetbrains.dokka.base.resolvers.local.DokkaLocationProvider
 import org.jetbrains.dokka.base.resolvers.local.LocationProviderFactory
 import org.jetbrains.dokka.base.resolvers.shared.RecognizedLinkFormat
@@ -15,10 +14,10 @@ import org.jetbrains.dokka.model.DisplaySourceSet
 import org.jetbrains.dokka.model.Documentable
 import org.jetbrains.dokka.pages.*
 import org.jetbrains.dokka.plugability.*
+import org.jetbrains.dokka.transformers.documentation.PreMergeDocumentableTransformer
 import org.jetbrains.dokka.transformers.pages.PageTransformer
 
 class HugoPlugin : DokkaPlugin() {
-
     val hugoPreprocessors by extensionPoint<PageTransformer>()
 
     private val dokkaBase by lazy { plugin<DokkaBase>() }
@@ -44,9 +43,14 @@ class HugoPlugin : DokkaPlugin() {
             PackageListCreator(it, RecognizedLinkFormat.DokkaJekyll)
         } order { after(rootCreator) }
     }
+
+    val excludeUndocumentedTransformer: Extension<PreMergeDocumentableTransformer, *, *> by extending {
+        dokkaBase.preMergeDocumentableTransformer providing ::ExcludeUndocumentedTransformer
+    }
+
 }
 
-private fun isUndocumented(documentable: Documentable, sourceSet: DokkaConfiguration.DokkaSourceSet): Boolean {
+public fun isUndocumented(documentable: Documentable, sourceSet: DokkaConfiguration.DokkaSourceSet): Boolean {
     fun resolveDependentSourceSets(sourceSet: DokkaConfiguration.DokkaSourceSet): List<DokkaConfiguration.DokkaSourceSet> {
         return sourceSet.dependentSourceSets.mapNotNull { sourceSetID ->
             documentable.sourceSets.singleOrNull { it.sourceSetID == sourceSetID }
