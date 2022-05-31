@@ -292,21 +292,22 @@ class HugoRenderer(
 
             node.children.forEach {
                 append("<tr>\n")
+                if (it.hasAnyContent()) {
+                    it.children.forEach {
+                        append("<td>\n")
+                        append("{{% md %}}\n")
+                        append("\n")
+                        append(buildString { it.build(this, pageContext) })
 
-                it.children.forEach {
-                    append("<td>\n")
-                    append("{{% md %}}\n")
-                    append("\n")
-                    append(buildString { it.build(this, pageContext) })
+                        append("\n")
+                        append("{{% /md %}}\n")
+                        append("</td>\n")
+                    }
+                    append("<td></td>\n".repeat(Math.max(0, node.header.size - it.children.size)))
 
+                    append("</tr>\n")
                     append("\n")
-                    append("{{% /md %}}\n")
-                    append("</td>\n")
                 }
-                append("<td></td>\n".repeat(Math.max(0, node.header.size - it.children.size)))
-
-                append("</tr>\n")
-                append("\n")
             }
             append("</tbody>\n")
         }
