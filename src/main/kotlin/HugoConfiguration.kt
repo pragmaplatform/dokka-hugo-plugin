@@ -7,4 +7,5 @@ data class HugoConfiguration(
     var titleCapitalize: Boolean = false,
     var linkTitleReplace: HashMap<String, String>? = null,
     var linkTitleCapitalize: Boolean = false,
+    var generateAllPathsFile: Boolean = true
 ) : ConfigurableBlock

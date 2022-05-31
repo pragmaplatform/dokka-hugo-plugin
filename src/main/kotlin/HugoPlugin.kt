@@ -121,7 +121,7 @@ class HugoRenderer(
         }
     }
 
-    private fun getConfig() : HugoConfiguration{
+    public fun getConfig() : HugoConfiguration{
         var hugoConfiguration = HugoConfiguration()
         try {
             val config = configuration<HugoPlugin, HugoConfiguration>(context)
