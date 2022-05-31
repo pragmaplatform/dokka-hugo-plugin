@@ -420,4 +420,8 @@ class HugoLocationProvider(
     dokkaContext: DokkaContext
 ) : DokkaLocationProvider(pageGraphRoot, dokkaContext, ".md") {
     override val PAGE_WITH_CHILDREN_SUFFIX = "_index"
+    override fun resolve(node: PageNode, context: PageNode?, skipExtension: Boolean): String {
+        // GameDataStrategyPlugin.getLoginDataAsyncRequests
+        return super.resolve(node, context, skipExtension)
+    }
 }
