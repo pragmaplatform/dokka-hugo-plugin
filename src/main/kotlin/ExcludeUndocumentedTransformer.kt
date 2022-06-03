@@ -68,11 +68,11 @@ class ExcludeUndocumentedTransformer(dokkaContext: DokkaContext) :
             hugoConfiguration
         }
 
-        if (localConfig.generateAllPathsFile) {
-            println(">>>>>>>>> localConfig.generateAllPathsFile is ${localConfig.generateAllPathsFile}")
-            File("/Users/andronic/pragma/experimental-engine/documentation/andronic.txt").appendText(documentableDescription)
+//        if (localConfig.generateAllPathsFile) {
+//            println(">>>>>>>>> localConfig.generateAllPathsFile is ${localConfig.generateAllPathsFile}")
+//            File("/Users/andronic/pragma/experimental-engine/documentation/andronic.txt").appendText(documentableDescription)
 //            return false
-        }
+//        }
 
         val manuallyMarkedAsUndocumented = (d is WithExtraProperties<*>) && hasApiDocsSuppressAnnotation(d)
         if (manuallyMarkedAsUndocumented) {
@@ -83,10 +83,12 @@ class ExcludeUndocumentedTransformer(dokkaContext: DokkaContext) :
 
         if (shouldBeReportedIfNotDocumented(d, d.sourceSets.single())) {
             val returnValue = isUndocumented(d, d.sourceSets.single())
-            if (returnValue) println(">>>>> ANDRONIC: ${documentableDescription.plus(" | undocumented")}")
+            val documentedLog = documentableDescription.plus(if (returnValue) " | notDocumented" else " | isDocumented")
+            println(">>>>> ANDRONIC in shouldBeReportedIfNotDocumented: $documentedLog")
             return returnValue
         }
-        println(">>>>> ANDRONIC: $documentableDescription")
+
+//        println(">>>>> ANDRONIC: $documentableDescription")
         return false
     }
 
