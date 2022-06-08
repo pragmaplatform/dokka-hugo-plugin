@@ -173,7 +173,7 @@ class HugoRenderer(
         } else {
             append("[")
             content()
-            append("]({{< relref \"$address\" >}})")
+            append("]($address)")
         }
     }
 
