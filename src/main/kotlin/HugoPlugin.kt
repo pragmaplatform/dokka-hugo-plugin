@@ -158,6 +158,8 @@ class HugoRenderer(
             resolved = resolved.replaceFirst("../", "")
         }
 
+        if (resolved == "_index.md") resolved = "./$resolved"
+
         buildLink(resolved) {
             append(to.name)
         }
