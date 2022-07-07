@@ -107,7 +107,7 @@ class HugoRenderer(
         val title = page.name.getTitle(hugoConfiguration)
         builder.append("title: \"${title}\"\n")
         builder.append("draft: false\n")
-        builder.append("toc: false\n")
+        builder.append("bookToc: false\n")
         builder.append("bottomNav: false\n")
         builder.append("type: \"api\"\n")
 
