@@ -76,7 +76,7 @@ class ExcludeUndocumentedTransformer(dokkaContext: DokkaContext) :
 
         val manuallyMarkedAsUndocumented = (d is WithExtraProperties<*>) && hasApiDocsSuppressAnnotation(d)
         if (manuallyMarkedAsUndocumented) {
-            println(">>>>> ANDRONIC manuallyMarkedAsUndocumented: ${documentableDescription.plus(" | undocumented")}")
+//            println(">>>>> ANDRONIC manuallyMarkedAsUndocumented: ${documentableDescription.plus(" | undocumented")}")
             return true
         }
 
@@ -84,7 +84,7 @@ class ExcludeUndocumentedTransformer(dokkaContext: DokkaContext) :
         if (shouldBeReportedIfNotDocumented(d, d.sourceSets.single())) {
             val returnValue = isUndocumented(d, d.sourceSets.single())
             val documentedLog = documentableDescription.plus(if (returnValue) " | notDocumented" else " | isDocumented")
-            println(">>>>> ANDRONIC in shouldBeReportedIfNotDocumented: $documentedLog")
+//            println(">>>>> ANDRONIC in shouldBeReportedIfNotDocumented: $documentedLog")
             return returnValue
         }
 
