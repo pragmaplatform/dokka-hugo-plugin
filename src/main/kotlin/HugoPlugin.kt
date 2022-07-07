@@ -274,7 +274,7 @@ class HugoRenderer(
         pageContext: ContentPage,
         sourceSetRestriction: Set<DisplaySourceSet>?
     ) {
-        append("<table>\n")
+        append("<table class='api-table'>\n")
 
         buildNewLine()
         if (node.dci.kind == ContentKind.Sample || node.dci.kind == ContentKind.Parameters) {
