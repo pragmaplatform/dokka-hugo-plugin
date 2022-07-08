@@ -90,16 +90,18 @@ class HugoRenderer(
 //            println(">>>> ANDRONIC : ${setIsDocumented} | ${documentable.name} | ${documentable.dri.packageName}")
         }
 
-        return if (page is PackagePage || atLeastOneIsDocumented) {
-            val builder = StringBuilder()
+        val builder = StringBuilder()
+        if (page is PackagePage || atLeastOneIsDocumented) {
             builder.append("---\n")
             buildFrontMatter(page, builder)
             builder.append("---\n\n")
             content(builder, page)
-            builder.toString()
         } else {
-            ""
+            builder.append("---\n")
+            builder.append("type: \"api\"\nisEmptyPage: true\n")
+            builder.append("---\n\n")
         }
+        return builder.toString()
     }
 
     private fun buildFrontMatter(page: ContentPage, builder: StringBuilder) {
@@ -158,7 +160,7 @@ class HugoRenderer(
             resolved = resolved.replaceFirst("../", "")
         }
 
-        if (resolved == "_index.md") resolved = "./$resolved"
+        if (resolved == "_index.md") resolved = "./_index.md"
 
         buildLink(resolved) {
             append(to.name)
@@ -167,15 +169,16 @@ class HugoRenderer(
 
     override fun StringBuilder.buildLink(address: String, content: StringBuilder.() -> Unit) {
         fun isExternalHref(address: String) = address.contains(":/")
-
+        var addressForIndexMd = address
         if (isExternalHref(address)) {
             append("[")
             content()
             append("]($address)")
         } else {
+            if (address == "_index.md") addressForIndexMd = "./_index.md"
             append("[")
             content()
-            append("]($address)")
+            append("]($addressForIndexMd)")
         }
     }
 
@@ -317,17 +320,13 @@ class HugoRenderer(
                     it.children.forEach {
                         append("<td>\n")
                         append("{{% md %}}\n")
-                        append("\n")
                         append(buildString { it.build(this, pageContext) })
-
-                        append("\n")
                         append("{{% /md %}}\n")
                         append("</td>\n")
                     }
                     append("<td></td>\n".repeat(Math.max(0, node.header.size - it.children.size)))
 
                     append("</tr>\n")
-                    append("\n")
                 }
             }
             append("</tbody>\n")
