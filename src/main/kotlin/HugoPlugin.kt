@@ -114,7 +114,7 @@ class HugoRenderer(
         builder.append("type: \"api\"\n")
 
         // Add menu item for each package
-        if (page is PackagePage) {
+        if (page is PackagePage || page is ClasslikePage) {
             val linkTitle = page.name.getLinkTitle(hugoConfiguration)
             builder.append("linktitle: \"${linkTitle}\"\n")
             builder.append("bookHidden: false\n")
