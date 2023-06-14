@@ -188,7 +188,7 @@ class HugoRenderer(
     }
 
     private fun StringBuilder.buildB() {
-        append("<code>")
+        append("<code class='api-code'>")
     }
 
     private fun StringBuilder.buildEndB() {
@@ -292,8 +292,8 @@ class HugoRenderer(
                 buildNewLine()
             }
         } else {
-            append("<thead>\n")
-            append("<tr>\n")
+            append("<thead class='api-thead'>\n")
+            append("<tr class='api-tr'>\n")
 
             val size = node.header.size
 
@@ -301,7 +301,7 @@ class HugoRenderer(
                 if (size == 1) {
                     val nodeHeader = node.header.first()
                     nodeHeader.children.forEach {
-                        append("<th>")
+                        append("<th class='api-th'>")
                         it.build(this, pageContext, it.sourceSets)
                         append("</th>")
                     }
@@ -312,13 +312,13 @@ class HugoRenderer(
             }
             append("</tr>\n")
             append("</thead>\n")
-            append("<tbody>\n")
+            append("<tbody class='api-tbody'>\n")
 
             node.children.forEach {
-                append("<tr>\n")
+                append("<tr class='api-tr'>\n")
                 if (it.hasAnyContent()) {
                     it.children.forEach {
-                        append("<td>\n")
+                        append("<td class='api-td'>\n")
                         append("{{% md %}}\n")
                         append(buildString { it.build(this, pageContext) })
                         append("{{% /md %}}\n")
